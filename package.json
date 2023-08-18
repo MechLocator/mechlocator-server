@@ -1,0 +1,24 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "This is the MechanicLocator server directory. It contains all the routes, controllers and models that are responsible for the backend of the Mechanic Locator App and Admin Dashboard. It was initialised on Saturday 12/08/23.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "author": "Mechanic Locator Technologies Limited",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.1",
+    "mongoose": "^7.4.3",
+    "nodemon": "^3.0.1"
+  },
+  "proxy": "http://localhost:4213"
+}

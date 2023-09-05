@@ -6,7 +6,8 @@ import { createError } from '../utils/error.js';
 export const register = async (req, res, next) => {
   try {
     const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(req.body.password, salt);
+    const passToHash = req.body.password;
+    const hash = bcrypt.hashSync(passToHash, salt);
 
     const newUser = new User({
       ...req.body,
@@ -50,7 +51,7 @@ export const login = async (req, res, next) => {
         httpOnly: true,
       })
       .status(200)
-      .json({ details: { ...otherDetails }, isAdmin, isVerified, isSuspended, isPartner });
+      .json({ details: { ...otherDetails }, isAdmin, isVerified, isSuspended, isPartner, token });
   } catch (err) {
     next(err);
   }

@@ -5,7 +5,7 @@ export default function verifyEditor(req, res, next) {
       if (req.user.isEditor) {
         next();
       } else {
-        return next(createError(403, 'You are not authorized!'));
+        return next(createError(403, 'You are not an editor!'));
       }
     });
 };

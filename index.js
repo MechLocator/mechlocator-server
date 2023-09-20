@@ -10,7 +10,7 @@ import usersRoute from "./routes/users.js"
 const app = express();
 dotenv.config();
 
-const PORT = process.env.PORT || 4213;
+const PORT = process.env.PORT || 3000;
 
 const mongoConnect = async () => {
   mongoose.set("strictQuery", true);

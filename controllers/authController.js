@@ -56,3 +56,41 @@ export const login = async (req, res, next) => {
     next(err);
   }
 };
+
+export const resetPassword = async (req,res,next) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) return next(createError(404, 'Sorry, user not found!'));
+
+    // Generate a random set of numbers, maximum length of 6 which we'll send to a user's email
+    function generateRandomNumber(length) {
+      const numbers = "0123456789";
+      let result;
+      const numLength = numbers.length
+      for( let i = 0; i < length; i++) {
+        result += numbers.charAt(Math.floor(Math.random() * numLength))
+      }
+      return result
+    }
+
+    const codeToSend = generateRandomNumber(6)
+
+    // Assign a password reset token for this user
+    const token = jwt.sign(
+      {id: user._id, code: codeToSend},
+      process.env.JWT_PASSWORD_RESET_KEY
+    )
+
+    // Send this token somehow to the user's email and have them confirm it in the app
+    console.log(JSON.stringify(token))
+  } catch (error) {
+    next(error)
+  }
+
+  // If the email exists in the MongoDB database, send a reset code to that email
+  // Have the user input the code into the app
+  // The app then confirms this code against that provided by the api
+  // If the codes match, we proceed to the next stage
+  // which is inputing a new password
+  // This new password is then saved and then the user is promted to login once again
+}

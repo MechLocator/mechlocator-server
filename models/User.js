@@ -20,25 +20,28 @@ const UserSchema = new mongoose.Schema(
             unique: true,
             required: true,
         },
-        accountType: {
-            type: String,
-        },
+        // accountType: {
+        //     type: String,
+        // },
         isAdmin: {
             type: Boolean,
             default: false,
+        },
+        owner_uid: {
+            type: Number,
         },
         isEditor: {
             type: Boolean,
             default: false,
         },
-        // isPartner: {
-        //     type: Boolean,
-        //     default: false,
-        // },
-        // isDriver: {
-        //     type: Boolean,
-        //     default: false,
-        // },
+        isPartner: {
+            type: Boolean,
+            default: false,
+        },
+        isDriver: {
+            type: Boolean,
+            default: false,
+        },
         isVerified: {
             type: Boolean,
             default: false,

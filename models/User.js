@@ -28,7 +28,7 @@ const UserSchema = new mongoose.Schema(
             default: false,
         },
         owner_uid: {
-            type: Number,
+            type: String,
         },
         isEditor: {
             type: Boolean,

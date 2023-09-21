@@ -42,3 +42,14 @@ export const updateUser = async (req, res, next) => {
       next(err);
     }
   };
+
+  export const getUserByUid = async (req,res, next) => {
+    const query = { owner_uid: req.query.owner_uid }
+    try {
+      const userByUid = await User.find(query)
+      res.status(200).json(userByUid)
+      console.log(`User by uid: ${userByUid}`)
+    } catch (error) {
+      next(error)
+    }
+  }

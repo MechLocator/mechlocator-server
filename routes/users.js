@@ -4,7 +4,8 @@ import {
     updateUser,
     deleteUser,
     getUser,
-    getUsers 
+    getUsers, 
+    getUserByUid
 } from "../controllers/userController.js"
 
 import verifyEditor from "../utils/verifyEditor.js"
@@ -29,6 +30,9 @@ router.delete('/:id', verifyUser, deleteUser);
 
 //GET
 router.get('/:id', verifyUser, verifyAdmin,verifyEditor, getUser);
+
+// GET
+router.get('/:uid', verifyUser, verifyAdmin, verifyEditor, getUserByUid)
 
 //GET ALL
 router.get('/', verifyAdmin, verifyEditor, getUsers);

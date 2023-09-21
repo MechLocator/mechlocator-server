@@ -10,13 +10,13 @@ import usersRoute from "./routes/users.js"
 const app = express();
 dotenv.config();
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 const mongoConnect = async () => {
   mongoose.set("strictQuery", true);
   try {
     mongoose.connect(process.env.MONGO_URI);
-    console.log("MongoDB Connection was completed successfully");
+    console.log("MongoDB Connection was completed successfully"); 
   } catch (err) {
     throw err;
   }

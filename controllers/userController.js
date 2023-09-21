@@ -44,9 +44,9 @@ export const updateUser = async (req, res, next) => {
   };
 
   export const getUserByUid = async (req,res, next) => {
-    const query = { owner_uid: req.query.owner_uid }
+    const query = { owner_uid: req.body.owner_uid }
     try {
-      const userByUid = await User.findOne(query)
+      const userByUid = await User.findById(query)
       res.status(200).json(userByUid)
       console.log(`User by uid: ${userByUid}`)
     } catch (error) {

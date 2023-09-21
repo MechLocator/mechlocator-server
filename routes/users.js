@@ -32,7 +32,7 @@ router.delete('/:id', verifyUser, deleteUser);
 router.get('/:id', verifyUser, verifyAdmin,verifyEditor, getUser);
 
 // GET
-router.get('/:uid', verifyUser, getUserByUid)
+router.get('/:uid', verifyUser, verifyAdmin, verifyEditor, getUserByUid)
 
 //GET ALL
 router.get('/', verifyAdmin, verifyEditor, getUsers);

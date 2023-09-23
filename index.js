@@ -34,6 +34,14 @@ console.log(`mongoDB has reconnected successfully!`);
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
+
+app.use((_, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
+
 app.use("/api/dashboard/users", authRoute)
 app.use("/api/dashboard/users/actions", usersRoute)
 app.use("/api/app/users", authRoute)

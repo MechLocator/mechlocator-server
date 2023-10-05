@@ -92,7 +92,7 @@ export const resetPassword = async (req,_,next) => {
   // The app then confirms this code against that provided by the api
   // If the codes match, we proceed to the next stage
   // which is inputing a new password
-  // This new password is then saved and then the user is promted to login once again
+  // This new password is then saved and then the user is prompted to login once again
 }
 
 export const isAuth = async (req,res,next) => {

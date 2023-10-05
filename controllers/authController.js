@@ -141,8 +141,7 @@ export const signOut = (req, res) => {
         message: "Authorization Has Failed!",
       });
     } else {
-      req.body.token = null;
-      req.session.loggedIn = false;
+      res.setHeader("Clear-Site-Data", '"cookies", "storage"');
       res.clearCookie("access_token");
     }
   }

@@ -129,41 +129,91 @@ export const resetPassword = async (req, _, next) => {
 };
 
 export const isAuth = async (req, res, next) => {
-  const authHeader = req.get("Authorization");
-  if (!authHeader) {
-    return res.status(401).json({ message: "not authenticated" });
-  }
-  const token = authHeader.split(" ")[1];
-  let decodedToken;
-  try {
-    decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
-  } catch (err) {
-    next(err);
-    return res
-      .status(500)
-      .json({ message: err.message || "could not decode the token" });
-  }
-  if (!decodedToken) {
-    res.status(401).json({ message: "unauthorized" });
+  if (req.headers && req.headers.authorization) {
+    const token = req.headers.authorization.split(" ")[1];
+
+    try {
+      const decode = jwt.verify(token, process.env.JWT_SECRET);
+      const user = await User.findById(decode.userId);
+      if (!user) {
+        return res.json({ success: false, message: "unauthorized access!" });
+      }
+
+      req.user = user;
+      next();
+    } catch (error) {
+      if (error.name === "JsonWebTokenError") {
+        return res.json({ success: false, message: "unauthorized access!" });
+      }
+      if (error.name === "TokenExpiredError") {
+        return res.json({
+          success: false,
+          message: "sesson expired try sign in!",
+        });
+      }
+
+      res.res.json({ success: false, message: "Internal server error!" });
+    }
   } else {
-    res.status(200).json({ message: "You are authenticated!!" });
+    res.json({ success: false, message: "unauthorized access!" });
   }
 };
 
-export const signOut = (req, res) => {
-  if (req.headers && req.headers.authorization) {
-    const token = req.headers.authorization.split(" ")[1];
-    // if (!token) {
-    //   return res.status(401).json({
-    //     success: false,
-    //     message: "Authorization Has Failed!",
-    //   });
-    // } else {
-    //   req.session.destroy();
-    //   res.setHeader("Clear-Site-Data", '"cookies", "storage"');
-    //   res.clearCookie("access_token");
-    // }
-    console.log(req.headers.authorization);
-    res.send("Ok");
+// export const isAuth = async (req, res, next) => {
+//   const authHeader = req.get("Authorization");
+//   if (!authHeader) {
+//     return res.status(401).json({ message: "not authenticated" });
+//   }
+//   const token = authHeader.split(" ")[1];
+//   let decodedToken;
+//   try {
+//     decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
+//     const user = await User.findById(decodedToken.userId)
+//     if (!user) {
+//       return res.json({ success: false, message: 'unauthorized access!' });
+//     }
+
+//     req.user = user;
+//     next();
+//   } catch (error) {
+//     if (error.name === 'JsonWebTokenError') {
+//       return res.json({ success: false, message: 'unauthorized access!' });
+//     }
+//     if (error.name === 'TokenExpiredError') {
+//       return res.json({
+//         success: false,
+//         message: 'sesson expired try sign in!',
+//       });
+//     }
+//     res.res.json({ success: false, message: 'Internal server error!' })
+//   }
+//   if (!decodedToken) {
+//     res.status(401).json({ message: "unauthorized" });
+//   } else {
+//     res.status(200).json({ message: "You are authenticated!!" });
+//   }
+// };
+
+export const signOut = async (req, res) => {
+  try {
+    if (req.headers && req.headers.authorization) {
+      const token = req.headers.authorization.split(" ")[1];
+      if (!token) {
+        return res
+          .status(401)
+          .json({ success: false, message: "Authorization fail!" });
+      }
+
+      const tokens = req.user.tokens;
+
+      const newTokens = tokens.filter(t => t.token !== token);
+
+      await User.findByIdAndUpdate(req.user._id, { tokens: newTokens });
+      res.json({ success: true, message: "Sign out successfully!" });
+    }
+  } catch (error) {
+    console.log(`AuthController signOut error: ${error.message}`);
+    return res.status(500).json({ success: false, message: error.message });
+    s;
   }
 };

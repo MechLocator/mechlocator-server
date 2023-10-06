@@ -162,7 +162,10 @@ export const isAuth = async (req, res) => {
 export const getProfile = (req, res, next) => {
   try {
     if (!req.user) {
-      return res.json({ success: false, message: "Unauthorized Access!" });
+      return res.json({
+        success: false,
+        message: "You do not have authorization to proceed!",
+      });
     } else {
       return res.json({
         success: true,

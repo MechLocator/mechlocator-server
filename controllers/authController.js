@@ -133,22 +133,23 @@ export const isAuth = async (req, res, next) => {
     const token = req.headers.authorization.split(" ")[1];
 
     try {
-      const decode = jwt.verify(token, process.env.JWT_SECRET);
-      const user = await User.findById(decode.userId);
+      const decode = jwt.verify(token, process.env.JWT_SECRET_KEY);
+      console.log(`Decoded Token: ${JSON.stringify(decode)}`);
+      const user = await User.findById(decode.id);
       if (!user) {
-        return res.json({ success: false, message: "unauthorized access!" });
+        return res.json({ success: false, message: "No user was found!" });
       }
 
       req.user = user;
       next();
     } catch (error) {
       if (error.name === "JsonWebTokenError") {
-        return res.json({ success: false, message: "unauthorized access!" });
+        return res.json({ success: false, message: error.message });
       }
       if (error.name === "TokenExpiredError") {
         return res.json({
           success: false,
-          message: "sesson expired try sign in!",
+          message: error.message,
         });
       }
 
@@ -159,41 +160,6 @@ export const isAuth = async (req, res, next) => {
   }
 };
 
-// export const isAuth = async (req, res, next) => {
-//   const authHeader = req.get("Authorization");
-//   if (!authHeader) {
-//     return res.status(401).json({ message: "not authenticated" });
-//   }
-//   const token = authHeader.split(" ")[1];
-//   let decodedToken;
-//   try {
-//     decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
-//     const user = await User.findById(decodedToken.userId)
-//     if (!user) {
-//       return res.json({ success: false, message: 'unauthorized access!' });
-//     }
-
-//     req.user = user;
-//     next();
-//   } catch (error) {
-//     if (error.name === 'JsonWebTokenError') {
-//       return res.json({ success: false, message: 'unauthorized access!' });
-//     }
-//     if (error.name === 'TokenExpiredError') {
-//       return res.json({
-//         success: false,
-//         message: 'sesson expired try sign in!',
-//       });
-//     }
-//     res.res.json({ success: false, message: 'Internal server error!' })
-//   }
-//   if (!decodedToken) {
-//     res.status(401).json({ message: "unauthorized" });
-//   } else {
-//     res.status(200).json({ message: "You are authenticated!!" });
-//   }
-// };
-
 export const signOut = async (req, res) => {
   try {
     if (req.headers && req.headers.authorization) {
@@ -202,14 +168,14 @@ export const signOut = async (req, res) => {
         return res
           .status(401)
           .json({ success: false, message: "Authorization fail!" });
+      } else {
+        const tokens = req.user.tokens;
+
+        const newTokens = tokens.filter(t => t.token !== token);
+
+        await User.findByIdAndUpdate(req.user._id, { tokens: newTokens });
+        res.json({ success: true, message: "Sign out successfully!" });
       }
-
-      const tokens = req.user.tokens;
-
-      const newTokens = tokens.filter(t => t.token !== token);
-
-      await User.findByIdAndUpdate(req.user._id, { tokens: newTokens });
-      res.json({ success: true, message: "Sign out successfully!" });
     }
   } catch (error) {
     console.log(`AuthController signOut error: ${error.message}`);

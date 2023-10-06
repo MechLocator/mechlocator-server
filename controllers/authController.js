@@ -42,8 +42,26 @@ export const login = async (req, res, next) => {
         isSuspended: user.isSuspended,
         isPartner: user.isPartner,
       },
-      process.env.JWT_SECRET_KEY
+      process.env.JWT_SECRET_KEY,
+      {
+        expiresIn: "1d",
+      }
     );
+
+    let oldTokens = user.tokens || [];
+
+    if (oldTokens.length) {
+      oldTokens = oldTokens.filter(t => {
+        const timeDiff = Date.now() - parseInt(t.signedAt) / 1000;
+        if (timeDiff < 86400) {
+          return t;
+        }
+      });
+    }
+
+    await User.findByIdAndUpdate(user._id, {
+      tokens: [...oldTokens, { token, signedAt: Date.now().toString() }],
+    });
 
     const {
       password,
@@ -135,14 +153,17 @@ export const isAuth = async (req, res, next) => {
 export const signOut = (req, res) => {
   if (req.headers && req.headers.authorization) {
     const token = req.headers.authorization.split(" ")[1];
-    if (!token) {
-      return res.status(401).json({
-        success: false,
-        message: "Authorization Has Failed!",
-      });
-    } else {
-      res.setHeader("Clear-Site-Data", '"cookies", "storage"');
-      res.clearCookie("access_token");
-    }
+    // if (!token) {
+    //   return res.status(401).json({
+    //     success: false,
+    //     message: "Authorization Has Failed!",
+    //   });
+    // } else {
+    //   req.session.destroy();
+    //   res.setHeader("Clear-Site-Data", '"cookies", "storage"');
+    //   res.clearCookie("access_token");
+    // }
+    console.log(req.headers.authorization);
+    res.send("Ok");
   }
 };

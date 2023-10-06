@@ -128,7 +128,7 @@ export const resetPassword = async (req, _, next) => {
   // This new password is then saved and then the user is prompted to login once again
 };
 
-export const isAuth = async (req, res) => {
+export const isAuth = async (req, res, next) => {
   if (req.headers && req.headers.authorization) {
     const token = req.headers.authorization.split(" ")[1];
 
@@ -140,7 +140,9 @@ export const isAuth = async (req, res) => {
         return res.json({ success: false, message: "No user was found!" });
       }
 
-      return (req.user = user);
+      console.log((req.user = user));
+      // console.log(`User is ${user}`);
+      next();
     } catch (error) {
       if (error.name === "JsonWebTokenError") {
         return res.json({ success: false, message: error.message });
@@ -156,27 +158,6 @@ export const isAuth = async (req, res) => {
     }
   } else {
     res.json({ success: false, message: "unauthorized access!" });
-  }
-};
-
-export const getProfile = (req, res, next) => {
-  try {
-    if (!req.user) {
-      return res.json({
-        success: false,
-        message: "You do not have authorization to proceed!",
-      });
-    } else {
-      return res.json({
-        success: true,
-        profile: {
-          name: req.user.name,
-          email: req.user.email,
-        },
-      });
-    }
-  } catch (error) {
-    next(error);
   }
 };
 

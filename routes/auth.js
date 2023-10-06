@@ -1,6 +1,5 @@
 import express from "express";
 import {
-  getProfile,
   isAuth,
   login,
   register,
@@ -13,7 +12,26 @@ const router = express.Router();
 router.post("/register", register);
 router.post("/login", login);
 router.get("/sign-out", isAuth, signOut);
-router.get("/profile", isAuth, getProfile);
+router.get("/profile", isAuth, (req, res, next) => {
+  try {
+    if (!req.user) {
+      return res.json({
+        success: false,
+        message: "You do not have authorization to proceed!",
+      });
+    } else {
+      return res.json({
+        success: true,
+        profile: {
+          name: req.user.name,
+          email: req.user.email,
+        },
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+});
 router.post("/reset-password", resetPassword);
 router.get("/private", isAuth);
 export default router;

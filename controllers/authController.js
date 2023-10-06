@@ -128,7 +128,7 @@ export const resetPassword = async (req, _, next) => {
   // This new password is then saved and then the user is prompted to login once again
 };
 
-export const isAuth = async (req, res, next) => {
+export const isAuth = async (req, res) => {
   if (req.headers && req.headers.authorization) {
     const token = req.headers.authorization.split(" ")[1];
 
@@ -140,8 +140,7 @@ export const isAuth = async (req, res, next) => {
         return res.json({ success: false, message: "No user was found!" });
       }
 
-      req.user = user;
-      next();
+      return (req.user = user);
     } catch (error) {
       if (error.name === "JsonWebTokenError") {
         return res.json({ success: false, message: error.message });
@@ -157,6 +156,24 @@ export const isAuth = async (req, res, next) => {
     }
   } else {
     res.json({ success: false, message: "unauthorized access!" });
+  }
+};
+
+export const getProfile = (req, res, next) => {
+  try {
+    if (!req.user) {
+      return res.json({ success: false, message: "Unauthorized Access!" });
+    } else {
+      return res.json({
+        success: true,
+        profile: {
+          name: req.user.name,
+          email: req.user.email,
+        },
+      });
+    }
+  } catch (error) {
+    next(error);
   }
 };
 
@@ -180,6 +197,5 @@ export const signOut = async (req, res) => {
   } catch (error) {
     console.log(`AuthController signOut error: ${error.message}`);
     return res.status(500).json({ success: false, message: error.message });
-    s;
   }
 };

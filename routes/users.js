@@ -11,7 +11,6 @@ import {
 import verifyEditor from "../utils/verifyEditor.js";
 import verifyAdmin from "../utils/verifyAdmin.js";
 import verifyUser from "../utils/verifyUser.js";
-import { isAuth } from "../controllers/authController.js";
 
 const router = express.Router();
 
@@ -33,24 +32,6 @@ router.get("/:id", verifyUser, verifyAdmin, verifyEditor, getUser);
 
 // GET
 router.get("/:uid", getUserByUid);
-
-router.get("/profile", isAuth, (req, res, next) => {
-  try {
-    if (!req.user) {
-      return res.json({ success: false, message: "Unauthorized Access!" });
-    } else {
-      return res.json({
-        success: true,
-        profile: {
-          name: req.user.name,
-          email: req.user.email,
-        },
-      });
-    }
-  } catch (error) {
-    next(error);
-  }
-});
 
 //GET ALL
 router.get("/", verifyAdmin, verifyEditor, getUsers);

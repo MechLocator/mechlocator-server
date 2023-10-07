@@ -175,7 +175,7 @@ export const signOut = async (req, res) => {
         const newTokens = tokens.filter(t => t.token !== token);
 
         await User.findByIdAndUpdate(req.user._id, { tokens: newTokens });
-        res.json({ success: true, message: "Sign out successfully!" });
+        return res.json({ success: true, message: "Sign out successfully!" });
       }
     }
   } catch (error) {

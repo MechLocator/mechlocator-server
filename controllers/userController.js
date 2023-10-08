@@ -57,6 +57,7 @@ export const addUserInfo = async (req, res, next) => {
         return res.status(200).json({ success: true, user });
       }
     } catch (error) {
+      next(error);
       return res.json({
         success: false,
         message: error.message,

@@ -12,6 +12,17 @@ const UserSchema = new mongoose.Schema(
       // match: /.+\@.+\..+/,
       unique: true,
     },
+    phoneNumber: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    carMake: {
+      type: String,
+    },
+    carModel: {
+      type: String,
+    },
     image: {
       type: String,
     },

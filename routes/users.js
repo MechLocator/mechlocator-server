@@ -6,6 +6,7 @@ import {
   getUser,
   getUsers,
   getUserByUid,
+  addUserInfo,
 } from "../controllers/userController.js";
 
 import verifyEditor from "../utils/verifyEditor.js";
@@ -20,6 +21,7 @@ const router = express.Router();
  includes verification and suspension.
 */
 router.put("/:id", verifyUser, verifyEditor, verifyAdmin, updateUser);
+router.put("/add-info/:id", verifyUser, addUserInfo);
 
 //DELETE
 /*

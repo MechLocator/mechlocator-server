@@ -6,7 +6,7 @@ export const verifyNumber = number => {
   //   const authToken = "your_auth_token";
 
   const client = twilio(
-    process.env.TWILIO_ACCOUNT_TEST_SID,
+    process.env.TWILIO_LIVE_ACCOUNT_SID,
     process.env.TWILIO_ACCOUNT_SECRET_KEY
   );
 

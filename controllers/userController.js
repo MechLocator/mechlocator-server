@@ -46,19 +46,22 @@ export const getUsers = async (req, res, next) => {
 export const addUserInfo = async (req, res, next) => {
   try {
     const isPhoneVerified = verifyNumber(req.body.phoneNumber);
-    if (isPhoneVerified) {
-      // assign the user's phone plus other updates to the user schema
-      const user = await User.findOneAndUpdate(
-        req.params.id,
-        { $set: req.body },
-        { new: true }
-      );
-      return res.status(200).json({ success: true, user });
+    try {
+      if (isPhoneVerified) {
+        // assign the user's phone plus other updates to the user schema
+        const user = await User.findByIdAndUpdate(
+          req.params.id,
+          { $set: req.body },
+          { new: true }
+        );
+        return res.status(200).json({ success: true, user });
+      }
+    } catch (error) {
+      return res.json({
+        success: false,
+        message: error.message,
+      });
     }
-    return res.json({
-      success: false,
-      message: "User wasn't updated successfully",
-    });
   } catch (error) {
     next(error);
     return res.json({ success: false.status, message: error.message });

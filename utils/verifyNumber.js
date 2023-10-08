@@ -7,14 +7,14 @@ export const verifyNumber = number => {
 
   const client = twilio(
     process.env.TWILIO_LIVE_ACCOUNT_SID,
-    process.env.TWILIO_ACCOUNT_SECRET_KEY
+    process.env.TWILIO_ACCOUNT_AUTH_TOKEN
   );
 
   client.messages
     .create({
       body: "Please verify your phone number to proceed. Thank you!",
       to: number, // Text your number
-      from: "+12345678901", // From a valid Twilio number
+      from: process.env.TWILIO_SENDER_NUMBER, // From a valid Twilio number
     })
     .then(message => console.log(message.sid));
 };

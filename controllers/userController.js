@@ -43,6 +43,7 @@ export const getUsers = async (req, res, next) => {
   }
 };
 
+// come back to this later
 export const addUserInfo = async (req, res, next) => {
   try {
     const isPhoneVerified = verifyNumber(req.body.phoneNumber);

@@ -23,9 +23,10 @@ router.get("/profile", isAuth, (req, res, next) => {
       return res.json({
         success: true,
         profile: {
-          id: req.params.id,
-          name: req.user.name,
-          email: req.user.email,
+          // id: req.params.id,
+          // name: req.user.name,
+          // email: req.user.email,
+          ...req.user,
         },
       });
     }

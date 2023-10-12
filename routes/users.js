@@ -20,25 +20,31 @@ const router = express.Router();
  Admin, Editor and User can make changes to a user's account. This
  includes verification and suspension.
 */
-router.put("/modify-status/:id", verifyEditor, verifyAdmin, updateUser);
+router.put("actions/modify-status/:id", verifyEditor, verifyAdmin, updateUser);
 
 // Allow only the user to perform updates to their profile from here
-router.put("/update-resource/:id", verifyUser, updateUser);
+router.put("actions/update-resource/:id", verifyUser, updateUser);
 // router.put("/add-info/:id", verifyUser, addUserInfo);
 
 //DELETE
 /*
  A User alone can delete their account
 */
-router.delete("/delete-resource/:id", verifyUser, deleteUser);
+router.delete("actions/delete-resource/:id", verifyUser, deleteUser);
 
 //GET
-router.get("/get-resource/:id", verifyUser, verifyAdmin, verifyEditor, getUser);
+router.get(
+  "actions/get-resource/:id",
+  verifyUser,
+  verifyAdmin,
+  verifyEditor,
+  getUser
+);
 
 // GET
-router.get("/:uid", getUserByUid);
+router.get("actions/:uid", getUserByUid);
 
 //GET ALL
-router.get("/get-all-resources", verifyAdmin, verifyEditor, getUsers);
+router.get("actions/get-all-resources", verifyAdmin, verifyEditor, getUsers);
 
 export default router;

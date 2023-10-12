@@ -42,10 +42,7 @@ export const login = async (req, res, next) => {
         isSuspended: user.isSuspended,
         isPartner: user.isPartner,
       },
-      process.env.JWT_SECRET_KEY,
-      {
-        expiresIn: "1d",
-      }
+      process.env.JWT_SECRET_KEY
     );
 
     let oldTokens = user.tokens || [];

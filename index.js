@@ -46,9 +46,9 @@ app.use((_, res, next) => {
 });
 
 app.use("/api/dashboard/users", authRoute);
-app.use("/api/dashboard/users", usersRoute);
+app.use("/api/dashboard/users/actions", usersRoute);
 app.use("/api/app/users", authRoute);
-app.use("/api/app/users", usersRoute);
+app.use("/api/app/users/actions", usersRoute);
 
 app.use((err, req, res, next) => {
   const errStatus = err.status || 500;

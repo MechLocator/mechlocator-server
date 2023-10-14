@@ -31,9 +31,9 @@ const UserSchema = new mongoose.Schema(
       required: true,
     },
     tokens: [{ type: Object }],
-    // accountType: {
-    //     type: String,
-    // },
+    accountType: {
+      type: String,
+    },
     isAdmin: {
       type: Boolean,
       default: false,
@@ -42,14 +42,6 @@ const UserSchema = new mongoose.Schema(
       type: String,
     },
     isEditor: {
-      type: Boolean,
-      default: false,
-    },
-    isPartner: {
-      type: Boolean,
-      default: false,
-    },
-    isDriver: {
       type: Boolean,
       default: false,
     },

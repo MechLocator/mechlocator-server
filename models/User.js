@@ -38,6 +38,9 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    location: {
+      type: String,
+    },
     owner_uid: {
       type: String,
     },

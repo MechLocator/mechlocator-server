@@ -41,9 +41,6 @@ const UserSchema = new mongoose.Schema(
     location: {
       type: String,
     },
-    owner_uid: {
-      type: String,
-    },
     isEditor: {
       type: Boolean,
       default: false,

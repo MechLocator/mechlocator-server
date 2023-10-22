@@ -84,10 +84,9 @@ export const getUserByUid = async (req, res, next) => {
 };
 
 export const getPartners = async (req, res, next) => {
+  const query = { accountType: req.query.accountType };
   try {
-    const partners = await User.find({
-      where: { accountType: req.query.accountType },
-    });
+    const partners = await User.find(query);
     return res.status(200).json(partners);
   } catch (error) {
     next(error);

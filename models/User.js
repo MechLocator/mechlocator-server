@@ -16,12 +16,6 @@ const UserSchema = new mongoose.Schema(
       type: String,
       unique: true,
     },
-    carMake: {
-      type: String,
-    },
-    carModel: {
-      type: String,
-    },
     image: {
       type: String,
     },

@@ -35,6 +35,7 @@ const UserSchema = new mongoose.Schema(
     location: {
       type: String,
     },
+    coords: { type: Object },
     isEditor: {
       type: Boolean,
       default: false,

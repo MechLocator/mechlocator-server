@@ -38,6 +38,8 @@ router.get("/get-resource/:id", verifyUser, verifyAdmin, verifyEditor, getUser);
 
 // GET
 router.get("/get/partners", getPartners);
+// GET
+router.get("/get/garage-by-coords", getGarageByCoords);
 
 // GET
 router.get("actions/:uid", getUserByUid);

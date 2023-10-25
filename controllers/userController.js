@@ -93,3 +93,14 @@ export const getPartners = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getGarageByCoords = async (req, res, next) => {
+  const query = { coords: req.query.coords };
+  try {
+    const partners = await User.find(query);
+    res.status(200).json(partners);
+    console.log(partners);
+  } catch (error) {
+    next(error);
+  }
+};

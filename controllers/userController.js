@@ -94,11 +94,11 @@ export const getPartners = async (req, res, next) => {
   }
 };
 
-export const getGarageByCoords = async (req, res, next) => {
-  const query = { coords: req.query.coords };
+export const getGarageByLocation = async (req, res, next) => {
+  const query = { location: req.query.location };
   try {
-    const partners = await User.find(query);
-    res.status(200).json(partners);
+    const garage = await User.find(query);
+    res.status(200).json(garage);
     console.log(partners);
   } catch (error) {
     next(error);

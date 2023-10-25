@@ -6,9 +6,8 @@ import {
   getUser,
   getUsers,
   getUserByUid,
-  addUserInfo,
   getPartners,
-  getGarageByCoords,
+  getGarageByLocation,
 } from "../controllers/userController.js";
 
 import verifyEditor from "../utils/verifyEditor.js";
@@ -40,7 +39,7 @@ router.get("/get-resource/:id", verifyUser, verifyAdmin, verifyEditor, getUser);
 // GET
 router.get("/get/partners", getPartners);
 // GET
-router.get("/get/garage-by-coords", getGarageByCoords);
+router.get("/get/garage-by-location", getGarageByLocation);
 
 // GET
 router.get("actions/:uid", getUserByUid);

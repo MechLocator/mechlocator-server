@@ -8,6 +8,7 @@ import {
   getUserByUid,
   addUserInfo,
   getPartners,
+  getGarageByCoords,
 } from "../controllers/userController.js";
 
 import verifyEditor from "../utils/verifyEditor.js";

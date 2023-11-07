@@ -5,6 +5,7 @@ import {
   register,
   resetPassword,
   signOut,
+  updatePassword,
   verifyCode,
 } from "../controllers/authController.js";
 
@@ -15,6 +16,7 @@ router.post("/login", login);
 router.get("/sign-out", isAuth, signOut);
 router.post("/reset-password", resetPassword);
 router.post("/verify-code", verifyCode);
+router.put("/update-password/:id", updatePassword);
 router.get("/profile", isAuth, (req, res, next) => {
   try {
     if (!req.user) {

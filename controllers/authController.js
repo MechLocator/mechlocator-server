@@ -96,19 +96,29 @@ export const resetPassword = async (req, res, next) => {
     if (!user) return next(createError(404, "Sorry, user not found!"));
 
     const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
       service: "gmail",
+      logger: true,
+      debug: true,
+      secureConnection: false,
+      secure: true,
+      port: 465,
       auth: {
         user: "mechlocator@gmail.com",
-        pass: "MechLocator@23_08_v1",
+        pass: process.env.NODEMAILER_USER_PASS,
+      },
+      tls: {
+        rejectUnauthorized: true,
       },
     });
+
+    console.log("User email " + user.email);
 
     const mailOptions = {
       from: "mechlocator@gmail.com",
       to: user.email,
       subject: "Password Reset",
-      html: "<b>Use the code below:</b>",
-      text: codeToSend,
+      html: `<main><b>Use the code below to reset your password:</b><br/><p>${codeToSend}</p></main>`,
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
@@ -124,23 +134,28 @@ export const resetPassword = async (req, res, next) => {
   }
 };
 
-export const verifyCode = async (req, res, next) => {
+export const verifyCode = (req, res, next) => {
   const { code } = req.body;
   if (code !== codeToSend) return;
+  res
+    .status(200)
+    .json({
+      success: true,
+      message: "User password updated successfully",
+    })
+    .catch(error => next(error));
+};
 
+export const updatePassword = async (req, res, next) => {
   try {
     const updatedUser = await User.findByIdAndUpdate(
       req.params.id,
       { $set: req.body },
       { new: true }
     );
-    res.status(200).json({
-      success: true,
-      message: "User password updated successfully",
-      updatedUser,
-    });
-  } catch (error) {
-    next(error);
+    res.status(200).json(updatedUser);
+  } catch (err) {
+    next(err);
   }
 };
 

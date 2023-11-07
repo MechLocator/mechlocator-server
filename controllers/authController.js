@@ -2,6 +2,8 @@ import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { createError } from "../utils/error.js";
+import nodemailer from "nodemailer";
+import { codeToSend } from "../utils/generateCode.js";
 
 export const register = async (req, res, next) => {
   try {
@@ -87,42 +89,59 @@ export const login = async (req, res, next) => {
   }
 };
 
-export const resetPassword = async (req, _, next) => {
+export const resetPassword = async (req, res, next) => {
+  const { email } = req.body;
   try {
-    const user = await User.findOne({ email: req.body.email });
+    const user = await User.findOne({ email: email });
     if (!user) return next(createError(404, "Sorry, user not found!"));
 
-    // Generate a random set of numbers, maximum length of 6 which we'll send to a user's email
-    function generateRandomNumber(length) {
-      const numbers = "0123456789";
-      let result;
-      const numLength = numbers.length;
-      for (let i = 0; i < length; i++) {
-        result += numbers.charAt(Math.floor(Math.random() * numLength));
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.NODEMAILER_USER_MAIL,
+        pass: process.env.NODEMAILER_USER_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.NODEMAILER_USER_MAIL,
+      to: user.email,
+      subject: "Password Reset",
+      html: "<b>Use the code below:</b>",
+      text: codeToSend,
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email sent: " + info.response);
       }
-      return result;
-    }
-
-    const codeToSend = generateRandomNumber(6);
-
-    // Assign a password reset token for this user
-    const token = jwt.sign(
-      { id: user._id, code: codeToSend },
-      process.env.JWT_PASSWORD_RESET_KEY
-    );
-
-    // Send this token somehow to the user's email and have them confirm it in the app
-    console.log(JSON.stringify(token));
+    });
+    res.send("Email Sent!!");
   } catch (error) {
     next(error);
   }
+};
 
-  // If the email exists in the MongoDB database, send a reset code to that email
-  // Have the user input the code into the app
-  // The app then confirms this code against that provided by the api
-  // If the codes match, we proceed to the next stage
-  // which is inputing a new password
-  // This new password is then saved and then the user is prompted to login once again
+export const verifyCode = async (req, res, next) => {
+  const { code } = req.body;
+  if (code !== codeToSend) return;
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true }
+    );
+    res.status(200).json({
+      success: true,
+      message: "User password updated successfully",
+      updatedUser,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const isAuth = async (req, res, next) => {

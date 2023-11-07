@@ -25,6 +25,7 @@ const UserSchema = new mongoose.Schema(
       required: true,
     },
     tokens: [{ type: Object }],
+    code: String,
     accountType: {
       type: String,
     },

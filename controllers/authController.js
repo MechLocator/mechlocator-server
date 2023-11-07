@@ -99,7 +99,7 @@ export const resetPassword = async (req, res, next) => {
       service: "gmail",
       auth: {
         user: "mechlocator@gmail.com",
-        pass: process.env.NODEMAILER_USER_PASS,
+        pass: "MechLocator@23_08_v1",
       },
     });
 

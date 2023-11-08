@@ -163,13 +163,11 @@ export const updatePassword = async (req, res, next) => {
       { $set: { ...req.body, password: hash } },
       { new: true }
     );
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: "User password updated successfully",
-        updatedUser,
-      });
+    res.status(200).json({
+      success: true,
+      message: "User password updated successfully",
+      updatedUser,
+    });
   } catch (err) {
     next(err);
   }

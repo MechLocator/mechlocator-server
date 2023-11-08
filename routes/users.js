@@ -8,6 +8,7 @@ import {
   getUserByUid,
   getPartners,
   getGarageByLocation,
+  getUserByEmail,
 } from "../controllers/userController.js";
 
 import verifyEditor from "../utils/verifyEditor.js";
@@ -35,6 +36,9 @@ router.delete("/delete-resource/:id", verifyUser, deleteUser);
 
 //GET
 router.get("/get-resource/:id", verifyUser, verifyAdmin, verifyEditor, getUser);
+
+// GET OWN USER INFO
+router.get("/get-by-email", getUserByEmail);
 
 // GET
 router.get("/get/partners", getPartners);

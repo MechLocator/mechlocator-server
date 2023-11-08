@@ -124,12 +124,16 @@ export const resetPassword = async (req, res, next) => {
       html: `<main><b>Use the code below to reset your password:</b><br/><p>${codeToSend}</p></main>`,
     };
 
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log("Email sent: " + info.response);
-      }
+    await new Promise((resolve, reject) => {
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log(error);
+          reject(error);
+        } else {
+          console.log("Email sent: " + info.response);
+          resolve(info);
+        }
+      });
     });
     res.send("Email Sent!!");
   } catch (error) {

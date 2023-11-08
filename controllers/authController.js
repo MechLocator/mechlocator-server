@@ -148,7 +148,7 @@ export const verifyCode = (req, res, next) => {
     .status(200)
     .json({
       success: true,
-      message: "User password updated successfully",
+      message: "Code verified successfully",
     })
     .catch(error => next(error));
 };

@@ -113,6 +113,9 @@ export const resetPassword = async (req, res, next) => {
     });
 
     console.log("User email " + user.email);
+    console.log(
+      "Environment Variable Pass " + process.env.NODEMAILER_USER_PASS
+    );
 
     const mailOptions = {
       from: "mechlocator@gmail.com",

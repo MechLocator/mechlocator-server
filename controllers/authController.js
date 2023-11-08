@@ -120,7 +120,7 @@ export const resetPassword = async (req, res, next) => {
     const mailOptions = {
       from: "mechlocator@gmail.com",
       to: user.email,
-      subject: "Password Reset",
+      subject: "Password Reset - Mechanic Locator",
       html: `<main><b>Use the code below to reset your password:</b><br/><p>${codeToSend}</p></main>`,
     };
 

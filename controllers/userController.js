@@ -106,7 +106,7 @@ export const getGarageByLocation = async (req, res, next) => {
 };
 
 export const getUserByEmail = async (req, res, next) => {
-  const query = { email: req.query.email };
+  const query = { email: req.body.email };
   try {
     const user = await User.find(query);
     res.status(200).json(user);

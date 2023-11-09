@@ -159,7 +159,6 @@ export const updatePassword = async (req, res, next) => {
     const salt = bcrypt.genSaltSync(10);
     const passToHash = req.body.password;
     const hash = bcrypt.hashSync(passToHash, salt);
-    console.log(req);
     const updatedUser = await User.findByIdAndUpdate(
       req.params.id,
       { $set: { ...req.body, password: hash } },

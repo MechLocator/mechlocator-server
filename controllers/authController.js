@@ -154,13 +154,13 @@ export const verifyCode = (req, res, next) => {
 };
 
 export const updatePassword = async (req, res, next) => {
-  const { email } = req.body;
+  const query = { email: req.query.email };
   try {
     const salt = bcrypt.genSaltSync(10);
     const passToHash = req.body.password;
     const hash = bcrypt.hashSync(passToHash, salt);
-    const updatedUser = await User.findByIdAndUpdate(
-      req.params.id,
+    const updatedUser = await User.updateOne(
+      query,
       { $set: { ...req.body, password: hash } },
       { new: true }
     );

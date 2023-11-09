@@ -2,9 +2,6 @@ import mongoose, { Schema } from "mongoose";
 
 const UserSchema = new mongoose.Schema(
   {
-    _id: {
-      type: Schema.Types.ObjectId,
-    },
     name: {
       type: String,
       required: true,

@@ -14,6 +14,10 @@ const ReviewsSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    wordRating: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );

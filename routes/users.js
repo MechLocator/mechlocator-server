@@ -34,11 +34,10 @@ router.put("/update-resource/:id", verifyUser, updateUser);
 */
 router.delete("/delete-resource/:id", verifyUser, deleteUser);
 
+router.get("/get-user", getUserByEmail);
+
 //GET
 router.get("/get-resource/:id", verifyUser, verifyAdmin, verifyEditor, getUser);
-
-// GET OWN USER INFO
-router.post("/get-by-email", getUserByEmail);
 
 // GET
 router.get("/get/partners", getPartners);

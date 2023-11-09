@@ -2,15 +2,39 @@ import User from "../models/User.js";
 import { verifyNumber } from "../utils/verifyNumber.js";
 
 export const updateUser = async (req, res, next) => {
-  try {
-    const updatedUser = await User.findByIdAndUpdate(
-      req.params.id,
-      { $set: req.body },
-      { new: true }
-    );
-    res.status(200).json(updatedUser);
-  } catch (err) {
-    next(err);
+  const isImagePresent = await User.find({
+    image: { $exists: false },
+  });
+  if (isImagePresent) {
+    try {
+      const updatedUser = await User.findByIdAndUpdate(
+        req.params.id,
+        { $set: req.body },
+        { new: true }
+      );
+      res.status(200).json(updatedUser);
+    } catch (err) {
+      next(err);
+    }
+  } else {
+    try {
+      // delete the previous image entry before proceeding
+      const userToUpdate = await User.findByIdAndUpdate(
+        req.params.id,
+        { $unset: { image } },
+        { new: true }
+      );
+      console.log(JSON.stringify(userToUpdate));
+
+      const updatedUser = await User.findByIdAndUpdate(
+        req.params.id,
+        { $set: req.body },
+        { new: true }
+      );
+      res.status(200).json(updatedUser);
+    } catch (err) {
+      next(err);
+    }
   }
 };
 

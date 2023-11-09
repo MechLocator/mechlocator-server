@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 
 import authRoute from "./routes/auth.js";
 import usersRoute from "./routes/users.js";
+import reviewsRoute from "./routes/reviews.js";
 const app = express();
 dotenv.config();
 
@@ -48,6 +49,7 @@ app.use("/api/dashboard/users", authRoute);
 app.use("/api/dashboard/users/actions", usersRoute);
 app.use("/api/app/users", authRoute);
 app.use("/api/app/users/actions", usersRoute);
+app.use("/api/app/users/actions", reviewsRoute);
 
 app.use((err, req, res, next) => {
   const errStatus = err.status || 500;

@@ -109,7 +109,7 @@ export const getUserByEmail = async (req, res, next) => {
   const query = { email: req.query.email };
   try {
     const user = await User.find(query);
-    res.status(200).json(partners);
+    res.status(200).json(user);
     console.log(partners);
   } catch (error) {
     next(error);

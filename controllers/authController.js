@@ -8,9 +8,8 @@ import { codeToSend } from "../utils/generateCode.js";
 export const register = async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
   if (user) {
-    res
-      .status(409)
-      .send("Email already exists. Try resetting your password instead.");
+    res.status(409).send("Email already exists!");
+    ss;
     return next(createError(409, "Sorry, user not found!"));
   }
   try {

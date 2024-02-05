@@ -9,6 +9,11 @@ const FAQSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  // coming from the admin or editor
+  isApproved: {
+    type: Boolean,
+    required: true,
+  },
   body: {
     type: String,
     required: true,

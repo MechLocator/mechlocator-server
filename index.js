@@ -48,10 +48,10 @@ app.use((_, res, next) => {
 
 app.use("/api/dashboard/users", authRoute);
 app.use("/api/dashboard/users/actions", usersRoute);
+app.use("/api/dashboard/actions", faqRoute);
 app.use("/api/app/users", authRoute);
 app.use("/api/app/users/actions", usersRoute);
 app.use("/api/app/users/actions", reviewsRoute);
-app.use("/api/app/users/actions", faqRoute);
 
 app.use((err, req, res, next) => {
   const errStatus = err.status || 500;

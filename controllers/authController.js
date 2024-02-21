@@ -28,6 +28,29 @@ export const register = async (req, res, next) => {
   }
 };
 
+export const createDashUser = async () => {
+  const user = await User.findOne({ email: req.body.email });
+  if (user) {
+    res.status(409).send("Email already exists!");
+    ss;
+    return next(createError(409, "Sorry, user not found!"));
+  }
+  try {
+    const salt = bcrypt.genSaltSync(10);
+    const passToHash = req.body.password;
+    const hash = bcrypt.hashSync(passToHash, salt);
+
+    const newUser = new User({
+      ...req.body,
+      password: hash,
+    });
+    await newUser.save();
+    res.status(200).json(newUser);
+  } catch (err) {
+    next(err);
+  }
+};
+
 export const login = async (req, res, next) => {
   try {
     const user = await User.findOne({ email: req.body.email });

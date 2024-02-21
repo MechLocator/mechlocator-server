@@ -14,6 +14,7 @@ import {
 import verifyEditor from "../utils/verifyEditor.js";
 import verifyAdmin from "../utils/verifyAdmin.js";
 import verifyUser from "../utils/verifyUser.js";
+import { createDashUser } from "../controllers/authController.js";
 
 const router = express.Router();
 
@@ -22,6 +23,10 @@ const router = express.Router();
  Admin, Editor and User can make changes to a user's account. This
  includes verification and suspension.
 */
+
+// create a dashboard users route
+router.post("/create-dash-user", verifyAdmin, createDashUser);
+
 router.put("/modify-status/:id", verifyEditor, verifyAdmin, updateUser);
 
 // Allow only the user to perform updates to their profile from here

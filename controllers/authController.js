@@ -95,6 +95,58 @@ export const login = async (req, res, next) => {
   }
 };
 
+export const sendPassCodeToEmail = async (req, res, next) => {
+  const { email } = req.body;
+  try {
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      service: "gmail",
+      logger: true,
+      debug: true,
+      secureConnection: false,
+      secure: true,
+      port: 465,
+      auth: {
+        user: "mechlocator@gmail.com",
+        pass: process.env.NODEMAILER_USER_PASS,
+      },
+      tls: {
+        rejectUnauthorized: true,
+      },
+    });
+    console.log(
+      "Environment Variable Pass " + process.env.NODEMAILER_USER_PASS
+    );
+
+    const mailOptions = {
+      from: "mechlocator@gmail.com",
+      to: email,
+      subject:
+        "Use the passcode below for your first login into the web app - Mechanic Locator",
+      html: `<main><b>Use this email for your login. You can chenge this in the app:</b><br/><p style="color: #ff0000; fontSize: 18px;">${req.body.password}</p></main>`,
+    };
+
+    await new Promise((resolve, reject) => {
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log(error);
+          reject(error);
+        } else {
+          console.log("Email sent: " + info.response);
+          resolve(info);
+        }
+      });
+    });
+    res.send("Email Sent!!");
+  } catch (error) {
+    next(error);
+    console.log(
+      `Error when sending new passcode to created user on dashboard!`
+    );
+    console.log(error.message);
+  }
+};
+
 export const resetPassword = async (req, res, next) => {
   const { email } = req.body;
   try {

@@ -4,10 +4,13 @@ import {
   login,
   register,
   resetPassword,
+  sendPassCodeToEmail,
   signOut,
   updatePassword,
   verifyCode,
 } from "../controllers/authController.js";
+import verifyAdmin from "../utils/verifyAdmin.js";
+import verifyEditor from "../utils/verifyEditor.js";
 
 const router = express.Router();
 
@@ -15,6 +18,7 @@ router.post("/register", register);
 router.post("/login", login);
 router.get("/sign-out", isAuth, signOut);
 router.post("/reset-password", resetPassword);
+router.post("/pass-to-email", verifyAdmin, verifyEditor, sendPassCodeToEmail); // only admins or editors can access this route
 router.post("/verify-code", verifyCode);
 router.put("/update-password/:id", updatePassword);
 router.get("/profile", isAuth, (req, res, next) => {

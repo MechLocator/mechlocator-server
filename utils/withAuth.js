@@ -2,7 +2,7 @@ export const adminAuthPage = permissions => {
   return (req, res, next) => {
     const userRole = req.body.adminRole;
 
-    if (permissions.includes(userRole)) {
+    if (permissions === userRole) {
       next();
     } else {
       return res.json({
@@ -17,7 +17,7 @@ export const editorAuthPage = permissions => {
   return (req, res, next) => {
     const userRole = req.body.editorRole;
 
-    if (permissions.includes(userRole)) {
+    if (permissions === userRole) {
       next();
     } else {
       return res.json({

@@ -7,7 +7,7 @@ export const adminAuthPage = permissions => {
     } else {
       return res.json({
         status: 401,
-        message: "You are not allowed to conduct this operation!",
+        message: "You are not an admin!",
       });
     }
   };
@@ -22,7 +22,7 @@ export const editorAuthPage = permissions => {
     } else {
       return res.json({
         status: 401,
-        message: "You are not allowed to conduct this operation!",
+        message: "You are not an editor!",
       });
     }
   };

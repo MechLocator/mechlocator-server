@@ -23,12 +23,7 @@ const router = express.Router();
 */
 
 // create a dashboard users route
-router.post(
-  "/create-dash-user",
-  adminAuthPage("admin"),
-  editorAuthPage("editor"),
-  createDashUser
-);
+router.post("/create-dash-user", adminAuthPage("admin"), createDashUser);
 
 router.put(
   "/modify-status/:id",

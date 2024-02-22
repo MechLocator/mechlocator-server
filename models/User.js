@@ -26,21 +26,20 @@ const UserSchema = new mongoose.Schema(
     },
     tokens: [{ type: Object }],
     code: String,
+    // Account Type for app users
     accountType: {
       type: String,
     },
-    isAdmin: {
-      type: Boolean,
-      default: false,
-    },
+    // user role for dashboard users
+    role: [
+      {
+        type: String,
+      },
+    ],
     location: {
       type: String,
     },
     coords: { type: Object },
-    isEditor: {
-      type: Boolean,
-      default: false,
-    },
     isVerified: {
       type: Boolean,
       default: false,

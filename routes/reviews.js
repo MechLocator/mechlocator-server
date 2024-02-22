@@ -7,16 +7,29 @@ import {
   getReviews,
   updateReview,
 } from "../controllers/reviewsController.js";
-import verifyAdmin from "../utils/verifyAdmin.js";
-import verifyEditor from "../utils/verifyEditor.js";
+import { authPage } from "../utils/withAuth.js";
 
 const router = express.Router();
 
 // Create Review
 router.post("/create-review", verifyUser, createReview);
 router.put("/edit-review/:id", verifyUser, updateReview);
-router.delete("/delete-review/:id", verifyUser, verifyAdmin, deleteReview);
-router.get("/get-review/:id", verifyUser, verifyAdmin, verifyEditor, getReview);
-router.get("/get-reviews", verifyUser, verifyAdmin, verifyEditor, getReviews);
+router.delete(
+  "/delete-review/:id",
+  authPage(["admin", "editor"]),
+  deleteReview
+);
+router.get(
+  "/get-review/:id",
+  verifyUser,
+  authPage(["admin", "editor"]),
+  getReview
+);
+router.get(
+  "/get-reviews",
+  verifyUser,
+  authPage(["admin", "editor"]),
+  getReviews
+);
 
 export default router;

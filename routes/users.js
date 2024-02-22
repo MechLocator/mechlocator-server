@@ -12,7 +12,7 @@ import {
 } from "../controllers/userController.js";
 import verifyUser from "../utils/verifyUser.js";
 import { createDashUser } from "../controllers/authController.js";
-import { authPage } from "../utils/withAuth.js";
+import { adminAuthPage, editorAuthPage } from "../utils/withAuth.js";
 
 const router = express.Router();
 
@@ -23,9 +23,19 @@ const router = express.Router();
 */
 
 // create a dashboard users route
-router.post("/create-dash-user", authPage(["admin"]), createDashUser);
+router.post(
+  "/create-dash-user",
+  adminAuthPage("admin"),
+  editorAuthPage("editor"),
+  createDashUser
+);
 
-router.put("/modify-status/:id", authPage(["admin", "editor"]), updateUser);
+router.put(
+  "/modify-status/:id",
+  adminAuthPage("admin"),
+  editorAuthPage("editor"),
+  updateUser
+);
 
 // Allow only the user to perform updates to their profile from here
 router.put("/update-resource/:id", verifyUser, updateUser);
@@ -43,7 +53,8 @@ router.get("/get-user", getUserByEmail);
 router.get(
   "/get-resource/:id",
   verifyUser,
-  authPage(["admin", "editor"]),
+  adminAuthPage("admin"),
+  editorAuthPage("editor"),
   getUser
 );
 
@@ -58,7 +69,8 @@ router.get("actions/:uid", getUserByUid);
 //GET ALL
 router.get(
   "actions/get-all-resources",
-  authPage(["admin", "editor"]),
+  adminAuthPage("admin"),
+  editorAuthPage("editor"),
   getUsers
 );
 

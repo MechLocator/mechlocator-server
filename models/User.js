@@ -31,11 +31,12 @@ const UserSchema = new mongoose.Schema(
       type: String,
     },
     // user role for dashboard users
-    role: [
-      {
-        type: String,
-      },
-    ],
+    adminRole: {
+      type: String,
+    },
+    editorRole: {
+      type: String,
+    },
     location: {
       type: String,
     },

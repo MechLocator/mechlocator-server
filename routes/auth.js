@@ -4,20 +4,18 @@ import {
   login,
   register,
   resetPassword,
-  sendPassCodeToEmail,
   signOut,
   updatePassword,
   verifyCode,
 } from "../controllers/authController.js";
-import { adminAuthPage } from "../utils/withAuth.js";
+import verifyUser from "../utils/verifyUser.js";
 
 const router = express.Router();
 
 router.post("/register", register);
 router.post("/login", login);
-router.get("/sign-out", isAuth, signOut);
-router.post("/reset-password", resetPassword);
-router.post("/pass-to-email", adminAuthPage("admin"), sendPassCodeToEmail); // only admins or editors can access this route
+router.get("/sign-out", isAuth, signOut); // android app logout
+router.post("/reset-password", resetPassword); // android app reset password route
 router.post("/verify-code", verifyCode);
 router.put("/update-password/:id", updatePassword);
 router.get("/profile", isAuth, (req, res, next) => {
@@ -39,6 +37,6 @@ router.get("/profile", isAuth, (req, res, next) => {
     next(error);
   }
 });
-router.post("/reset-password", resetPassword);
+router.post("/reset-password", verifyUser, resetPassword);
 router.get("/private", isAuth);
 export default router;

@@ -5,6 +5,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 
 import authRoute from "./routes/auth.js";
+import dashAuth from "./routes/dashAuth.js";
 import usersRoute from "./routes/users.js";
 import reviewsRoute from "./routes/reviews.js";
 import faqRoute from "./routes/faq.js";
@@ -42,11 +43,15 @@ app.use((_, res, next) => {
     "Access-Control-Allow-Methods",
     "GET, POST, PUT, PATCH, DELETE"
   );
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Content-Type",
+    "Authorization"
+  );
   next();
 });
 
-app.use("/api/dashboard/users", authRoute);
+app.use("/api/dashboard/users", dashAuth);
 app.use("/api/dashboard/users/actions", usersRoute);
 app.use("/api/dashboard/actions", faqRoute);
 // app.use("/api/app/users/actions", faqRoute);

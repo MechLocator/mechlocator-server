@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const UserSchema = new mongoose.Schema(
+const AuthUserSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -11,6 +11,10 @@ const UserSchema = new mongoose.Schema(
       required: true,
       // match: /.+\@.+\..+/,
       unique: true,
+    },
+    role: {
+      type: String,
+      enum: ["editor", "admin"],
     },
     phoneNumber: {
       type: String,
@@ -26,24 +30,8 @@ const UserSchema = new mongoose.Schema(
     },
     tokens: [{ type: Object }],
     code: String,
-    // Account Type for app users
-    accountType: {
-      type: String,
-    },
-    location: {
-      type: String,
-    },
-    coords: { type: Object },
-    isVerified: {
-      type: Boolean,
-      default: false,
-    },
-    isSuspended: {
-      type: Boolean,
-      default: false,
-    },
   },
   { timestamps: true }
 );
 
-export default mongoose.model("User", UserSchema);
+export default mongoose.model("AuthUser", AuthUserSchema);

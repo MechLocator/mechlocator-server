@@ -11,8 +11,7 @@ import {
   getUserByEmail,
 } from "../controllers/userController.js";
 import verifyUser from "../utils/verifyUser.js";
-import { createDashUser } from "../controllers/authController.js";
-import { adminAuthPage, editorAuthPage } from "../utils/withAuth.js";
+import { createDashUser } from "../controllers/dashAuthController.js";
 
 const router = express.Router();
 
@@ -23,14 +22,9 @@ const router = express.Router();
 */
 
 // create a dashboard users route
-router.post("/create-dash-user", adminAuthPage("admin"), createDashUser);
+router.post("/create-dash-user", createDashUser);
 
-router.put(
-  "/modify-status/:id",
-  adminAuthPage("admin"),
-  editorAuthPage("editor"),
-  updateUser
-);
+router.put("/modify-status/:id", updateUser);
 
 // Allow only the user to perform updates to their profile from here
 router.put("/update-resource/:id", verifyUser, updateUser);
@@ -45,13 +39,7 @@ router.delete("/delete-resource/:id", verifyUser, deleteUser);
 router.get("/get-user", getUserByEmail);
 
 //GET
-router.get(
-  "/get-resource/:id",
-  verifyUser,
-  adminAuthPage("admin"),
-  editorAuthPage("editor"),
-  getUser
-);
+router.get("/get-resource/:id", verifyUser, getUser);
 
 // GET
 router.get("/get/partners", getPartners);
@@ -62,11 +50,6 @@ router.get("/get/garage-by-location", getGarageByLocation);
 router.get("actions/:uid", getUserByUid);
 
 //GET ALL
-router.get(
-  "actions/get-all-resources",
-  adminAuthPage("admin"),
-  editorAuthPage("editor"),
-  getUsers
-);
+router.get("actions/get-all-resources", getUsers);
 
 export default router;

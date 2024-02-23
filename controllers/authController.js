@@ -28,29 +28,6 @@ export const register = async (req, res, next) => {
   }
 };
 
-export const createDashUser = async (req, res, next) => {
-  const user = await User.findOne({ email: req.body.email });
-  if (user) {
-    res.status(409).send("Email already exists!");
-    ss;
-    return next(createError(409, "Sorry, user not found!"));
-  }
-  try {
-    const salt = bcrypt.genSaltSync(10);
-    const passToHash = req.body.password;
-    const hash = bcrypt.hashSync(passToHash, salt);
-
-    const newUser = new User({
-      ...req.body,
-      password: hash,
-    });
-    await newUser.save();
-    res.status(200).json(newUser);
-  } catch (err) {
-    next(err);
-  }
-};
-
 export const login = async (req, res, next) => {
   try {
     const user = await User.findOne({ email: req.body.email });
@@ -67,11 +44,8 @@ export const login = async (req, res, next) => {
     const token = jwt.sign(
       {
         id: user._id,
-        isAdmin: user.isAdmin,
-        isEditor: user.isEditor,
         isVerified: user.isVerified,
         isSuspended: user.isSuspended,
-        isPartner: user.isPartner,
       },
       process.env.JWT_SECRET_KEY
     );
@@ -91,15 +65,8 @@ export const login = async (req, res, next) => {
       tokens: [...oldTokens, { token, signedAt: Date.now().toString() }],
     });
 
-    const {
-      password,
-      isAdmin,
-      isEditor,
-      isVerified,
-      isPartner,
-      isSuspended,
-      ...otherDetails
-    } = user._doc;
+    const { password, isVerified, isPartner, isSuspended, ...otherDetails } =
+      user._doc;
     res
       .cookie("access_token", token, {
         httpOnly: true,
@@ -107,66 +74,12 @@ export const login = async (req, res, next) => {
       .status(200)
       .json({
         details: { ...otherDetails },
-        isAdmin,
         isVerified,
         isSuspended,
-        isPartner,
         token,
       });
   } catch (err) {
     next(err);
-  }
-};
-
-export const sendPassCodeToEmail = async (req, res, next) => {
-  const { email } = req.body;
-  try {
-    const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      service: "gmail",
-      logger: true,
-      debug: true,
-      secureConnection: false,
-      secure: true,
-      port: 465,
-      auth: {
-        user: "mechlocator@gmail.com",
-        pass: process.env.NODEMAILER_USER_PASS,
-      },
-      tls: {
-        rejectUnauthorized: true,
-      },
-    });
-    console.log(
-      "Environment Variable Pass " + process.env.NODEMAILER_USER_PASS
-    );
-
-    const mailOptions = {
-      from: "mechlocator@gmail.com",
-      to: email,
-      subject:
-        "Use the passcode below for your first login into the web app - Mechanic Locator",
-      html: `<main><b>Use this email for your login. You can chenge this in the app:</b><br/><p style="color: #ff0000; fontSize: 18px;">${req.body.password}</p></main>`,
-    };
-
-    await new Promise((resolve, reject) => {
-      transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-          console.log(error);
-          reject(error);
-        } else {
-          console.log("Email sent: " + info.response);
-          resolve(info);
-        }
-      });
-    });
-    res.send("Email Sent!!");
-  } catch (error) {
-    next(error);
-    console.log(
-      `Error when sending new passcode to created user on dashboard!`
-    );
-    console.log(error.message);
   }
 };
 

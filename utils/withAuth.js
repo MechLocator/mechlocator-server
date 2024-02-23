@@ -1,11 +1,12 @@
 export const adminAuthPage = permissions => {
   return (req, res, next) => {
-    const userRole = req.body.adminRole;
+    // const userRole = req.body.role;
+    console.log(`Req object ${JSON.stringify(req.body)}`);
 
-    if (permissions === userRole) {
+    if (permissions.includes(req.body.role)) {
       next();
     } else {
-      return res.json({
+      return res.status(401).json({
         status: 401,
         message: "You are not an admin!",
       });
@@ -15,12 +16,12 @@ export const adminAuthPage = permissions => {
 
 export const editorAuthPage = permissions => {
   return (req, res, next) => {
-    const userRole = req.body.editorRole;
+    const userRole = req.body.role;
 
-    if (permissions === userRole) {
+    if (permissions.includes(userRole)) {
       next();
     } else {
-      return res.json({
+      return res.status(401).json({
         status: 401,
         message: "You are not an editor!",
       });

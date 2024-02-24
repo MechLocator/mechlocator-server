@@ -4,6 +4,9 @@ import jwt from "jsonwebtoken";
 import { createError } from "../utils/error.js";
 import nodemailer from "nodemailer";
 
+/**
+ * @DESC Controller function to handle registration of dashboard users onto the platform.
+ */
 export const register = async (req, role, res) => {
   try {
     //Get employee from database with same name if any
@@ -55,6 +58,9 @@ export const register = async (req, role, res) => {
   }
 };
 
+/**
+ * @DESC Controller function to handle login of users onto the platform.
+ */
 export const login = async (req, role, res) => {
   let { email, password } = req;
 
@@ -119,7 +125,7 @@ export const login = async (req, role, res) => {
     //   message: "You are now logged in.",
     // });
 
-    const { password, role, ...otherDetails } = user._doc;
+    const { password, ...otherDetails } = user._doc;
 
     return res
       .cookie("access_token", token, {
@@ -139,6 +145,10 @@ export const login = async (req, role, res) => {
   }
 };
 
+/**
+ * @DESC Controller function to handle the creation of a dashboard user.
+ * This function is only accessible to users with admin rights
+ */
 export const createDashUser = async (req, res, next) => {
   const user = await AuthUser.findOne({ email: req.body.email });
   if (user) {
@@ -162,6 +172,9 @@ export const createDashUser = async (req, res, next) => {
   }
 };
 
+/**
+ * @DESC Controller function to handle sending of the password reset code to the user via Nodemmailer(https://nodemailer.com for more information)
+ */
 export const sendPassCodeToEmail = async (req, res, next) => {
   const { email } = req.body;
   try {
@@ -214,6 +227,13 @@ export const sendPassCodeToEmail = async (req, res, next) => {
   }
 };
 
+/**
+ * @DESC Controller function to handle reset password request.
+ * It checks the existence of a user in the DB and if they are present,
+ * it uses Nodemailer <https://nodemailer.com/> to send a password reset code to the user.
+ * Once the user has entered that code and confirmed it against the backend,
+ * they are allowed to proceed with the password reset request.
+ */
 export const resetPassword = async (req, res, next) => {
   const { email } = req.body;
   try {
@@ -266,6 +286,9 @@ export const resetPassword = async (req, res, next) => {
   }
 };
 
+/**
+ * @DESC Controller function to handle password update upon password reset request
+ */
 export const updatePassword = async (req, res, next) => {
   try {
     const salt = bcrypt.genSaltSync(10);
@@ -287,6 +310,9 @@ export const updatePassword = async (req, res, next) => {
   }
 };
 
+/**
+ * @DESC Controller function to check whether a loggedin user is still loggedin
+ */
 export const isAuth = async (req, res, next) => {
   if (req.headers && req.headers.authorization) {
     const token = req.headers.authorization.split(" ")[1];
@@ -320,6 +346,10 @@ export const isAuth = async (req, res, next) => {
   }
 };
 
+/**
+ * @DESC Controller function to handle signout on the server
+ * It is responsible for the removal of the JWT assigned upon login
+ */
 export const signOut = async (req, res) => {
   try {
     if (req.headers && req.headers.authorization) {

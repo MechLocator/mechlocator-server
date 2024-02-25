@@ -12,6 +12,15 @@ const AuthUserSchema = new mongoose.Schema(
       // match: /.+\@.+\..+/,
       unique: true,
     },
+    jobLocation: {
+      type: String,
+    },
+    jobRole: {
+      type: String,
+    },
+    desc: {
+      type: String,
+    },
     role: {
       type: String,
       enum: ["editor", "admin"],

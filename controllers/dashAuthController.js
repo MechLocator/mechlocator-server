@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { createError } from "../utils/error.js";
 import nodemailer from "nodemailer";
+import User from "../models/User.js";
 
 /**
  * @DESC Controller function to handle registration of dashboard users onto the platform.
@@ -169,6 +170,29 @@ export const createDashUser = async (req, res, next) => {
     res.status(200).json(newUser);
   } catch (err) {
     next(err);
+  }
+};
+
+/**
+ * @DESC Controller function to handle sending of the password reset code to the user via Nodemmailer(https://nodemailer.com for more information)
+ */
+export const modifyUserStatus = async () => {
+  try {
+    const userToModify = await User.findByIdAndUpdate(
+      req.params.id,
+      { $set: { ...req.body } },
+      { new: true }
+    );
+    return res.status(200).json({
+      success: true,
+      message: "User password updated successfully",
+      user: userToModify,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 

@@ -156,7 +156,6 @@ export const createDashUser = async (req, res, next) => {
   const user = await AuthUser.findOne({ email: req.body.email });
   if (user) {
     res.status(409).send("Email already exists!");
-    ss;
     return next(createError(409, "Sorry, user not found!"));
   }
   try {
@@ -169,7 +168,8 @@ export const createDashUser = async (req, res, next) => {
       password: hash,
     });
     await newUser.save();
-    res.status(200).json(newUser);
+    const { password, ...otherDetails } = newUser._doc;
+    res.status(200).json(otherDetails);
   } catch (err) {
     next(err);
   }

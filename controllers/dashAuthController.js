@@ -113,20 +113,14 @@ export const login = async (req, role, res) => {
       tokens: [...oldTokens, { token, signedAt: Date.now().toString() }],
     });
 
+    const { password, ...otherDetails } = user._doc;
+
     // let result = {
     //   name: user.name,
     //   role: user.role,
     //   email: user.email,
-    //   token: `Bearer ${token}`,
-    //   expiresIn: 168,
+    //   token: token,
     // };
-
-    // return res.status(200).json({
-    //   ...result,
-    //   message: "You are now logged in.",
-    // });
-
-    const { password, role, ...otherDetails } = user._doc;
 
     return res
       .cookie("access_token", token, {
@@ -134,9 +128,19 @@ export const login = async (req, role, res) => {
       })
       .status(200)
       .json({
-        details: otherDetails,
+        ...otherDetails,
         token,
+        message: "You are now logged in.",
       });
+    // return res
+    //   .cookie("access_token", token, {
+    //     httpOnly: true,
+    //   })
+    //   .status(200)
+    //   .json({
+    //     details: otherDetails,
+    //     token,
+    //   });
   } else {
     return res.status(403).json({
       message: "Incorrect password.",

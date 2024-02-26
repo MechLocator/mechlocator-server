@@ -126,7 +126,7 @@ export const login = async (req, role, res) => {
     //   message: "You are now logged in.",
     // });
 
-    const { password, ...otherDetails } = user._doc;
+    const { password, role, ...otherDetails } = user._doc;
 
     return res
       .cookie("access_token", token, {
@@ -135,8 +135,6 @@ export const login = async (req, role, res) => {
       .status(200)
       .json({
         details: otherDetails,
-        role,
-        email,
         token,
       });
   } else {

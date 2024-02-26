@@ -10,6 +10,7 @@ import {
   signOut,
 } from "../controllers/dashAuthController.js";
 import { userAuth } from "../utils/jsontokenVerifier.js";
+import { getUsers } from "../controllers/userController.js";
 
 const router = express.Router();
 
@@ -42,22 +43,7 @@ router.post("/reset-password", userAuth(["admin", "editor"]), resetPassword); //
 router.post("/create-dash-user", userAuth(["admin"]), createDashUser);
 router.put("/modify-status", userAuth(["admin", "editor"]), modifyUserStatus);
 router.post("/pass-to-email", userAuth(["admin"]), sendPassCodeToEmail); // only admins or editors can access this route
-router.get("/return-something", userAuth(["admin"]), async (req, res) => {
-  // console.log(req);
-  return res
-    .status(202)
-    .json(`welcome user. You're allowed to view this route as an admin`);
-});
-router.get(
-  "/return-something-else",
-  userAuth(["editor"]),
-  //   checkRole(["admin"]),
-  async (_, res) => {
-    // console.log(req);
-    return res
-      .status(202)
-      .json(`welcome user. You're allowed to view this route as an editor`);
-  }
-);
+//GET ALL
+router.get("/get-all-users", userAuth(["admin", "editor"]), getUsers);
 
 export default router;

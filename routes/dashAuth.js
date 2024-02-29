@@ -1,6 +1,7 @@
 import express from "express";
 import {
   createDashUser,
+  getPartners,
   isAuth,
   login,
   modifyUserStatus,
@@ -45,5 +46,6 @@ router.put("/modify-status", userAuth(["admin", "editor"]), modifyUserStatus);
 router.post("/pass-to-email", userAuth(["admin"]), sendPassCodeToEmail); // only admins or editors can access this route
 //GET ALL
 router.get("/get-all-users", userAuth(["admin", "editor"]), getUsers);
+router.get("/garages", userAuth(["admin", "editor"]), getPartners);
 
 export default router;

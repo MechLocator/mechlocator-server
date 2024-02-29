@@ -199,6 +199,20 @@ export const modifyUserStatus = async () => {
 };
 
 /**
+ * @DESC Controller function to handle fetch request for all garages
+ */
+export const getPartners = async (req, res, next) => {
+  const query = { accountType: req.query.accountType };
+  try {
+    const partners = await User.find(query);
+    res.status(200).json(partners);
+    console.log(partners);
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
  * @DESC Controller function to handle sending of the password reset code to the user via Nodemmailer(https://nodemailer.com for more information)
  */
 export const sendPassCodeToEmail = async (req, res, next) => {

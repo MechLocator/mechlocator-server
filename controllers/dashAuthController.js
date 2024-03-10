@@ -214,7 +214,7 @@ export const getUsers = async (req, res, next) => {
     /**
      * OBJECT_DESC:: Initialize an empty object to handle pagination functionality
      */
-    let results;
+    const results = {};
     results.totalUsers = users.length;
     results.pageCount = Math.ceil(users.length / limit);
 

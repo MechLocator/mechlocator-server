@@ -2,6 +2,7 @@ import express from "express";
 import {
   createDashUser,
   getPartners,
+  getUsers,
   isAuth,
   login,
   modifyUserStatus,
@@ -11,7 +12,7 @@ import {
   signOut,
 } from "../controllers/dashAuthController.js";
 import { userAuth } from "../utils/jsontokenVerifier.js";
-import { getUser, getUsers } from "../controllers/userController.js";
+import { getUser } from "../controllers/userController.js";
 
 const router = express.Router();
 
@@ -45,7 +46,7 @@ router.post("/create-dash-user", userAuth(["admin"]), createDashUser);
 router.put("/modify-status", userAuth(["admin", "editor"]), modifyUserStatus);
 router.post("/pass-to-email", userAuth(["admin"]), sendPassCodeToEmail); // only admins or editors can access this route
 //GET ALL
-router.get("/get-all-users", userAuth(["admin", "editor"]), getUsers);
+router.get("/get-all-users", getUsers);
 router.get("/get-user/:id", userAuth(["admin", "editor"]), getUser);
 router.get("/garages", userAuth(["admin", "editor"]), getPartners);
 

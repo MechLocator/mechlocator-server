@@ -199,6 +199,46 @@ export const modifyUserStatus = async () => {
 };
 
 /**
+ * @DESC Controller function to fetch all users in a paginated form
+ */
+export const getUsers = async (req, res, next) => {
+  try {
+    const users = await User.find();
+    // convert the page and limit from strings to integers
+    const page = parseInt(req.query.page);
+    const limit = parseInt(req.query.limit);
+
+    const startIndex = (page - 1) * limit;
+    const lastIndex = page * limit;
+
+    /**
+     * OBJECT_DESC:: Initialize an empty object to handle pagination functionality
+     */
+    const results = {};
+    results.totalUsers = users.length;
+    results.pageCount = Math.ceil(users.length / limit);
+
+    if (lastIndex < users.length) {
+      results.next = {
+        page: page + 1,
+      };
+    }
+
+    if (startIndex > 0) {
+      results.prev = {
+        page: page - 1,
+      };
+    }
+
+    results.result = users.slice(startIndex, lastIndex);
+
+    res.status(200).json(results);
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
  * @DESC Controller function to handle fetch request for all garages
  */
 export const getPartners = async (req, res, next) => {

@@ -205,18 +205,18 @@ export const getUsers = async (req, res, next) => {
   try {
     const users = await User.find();
     // convert the page and limit from strings to integers
-    const page = parseInt(req.query.page);
-    const limit = parseInt(req.query.limit);
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.pageSize);
 
-    const startIndex = (page - 1) * limit;
-    const lastIndex = page * limit;
+    const startIndex = (page - 1) * pageSize;
+    const lastIndex = page * pageSize;
 
     /**
-     * OBJECT_DESC:: Initialize an empty object to handle pagination functionality
+     * Initialize an empty object to handle pagination functionality
      */
-    const results = [];
+    const results = {};
     results.totalUsers = users.length;
-    results.pageCount = Math.ceil(users.length / limit);
+    results.pageCount = Math.ceil(users.length / pageSize);
 
     if (lastIndex < users.length) {
       results.next = {
@@ -233,6 +233,20 @@ export const getUsers = async (req, res, next) => {
     results.result = users.slice(startIndex, lastIndex);
 
     res.status(200).json(results);
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
+ * Function specifying data fetch based on the query received
+ */
+export const fetchUser = async (req, res, next) => {
+  const query = { email: req.query.email };
+
+  try {
+    const foundUser = await User.findOne(query);
+    return res.status(200).json({ ...foundUser._doc });
   } catch (err) {
     next(err);
   }

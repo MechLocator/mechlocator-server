@@ -1,1 +1,2 @@
-GET http://localhost:8080/api/dashboard/users/get-all-users?page=1&limit=4
+# GET http://localhost:8080/api/dashboard/users/get-all-users?page=1&pageSize=7
+GET http://localhost:8080/api/dashboard/users/get-query-result?email=ndirangugithinji23@gmail.com

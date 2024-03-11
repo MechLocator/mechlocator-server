@@ -14,6 +14,7 @@ import {
 } from "../controllers/dashAuthController.js";
 import { userAuth } from "../utils/jsontokenVerifier.js";
 import { getUser } from "../controllers/userController.js";
+import { getFAQs } from "../controllers/faqController.js";
 
 const router = express.Router();
 
@@ -51,5 +52,6 @@ router.get("/get-all-users", userAuth(["admin", "editor"]), getUsers);
 router.get("/get-query-result", userAuth(["admin", "editor"]), fetchUser);
 router.get("/get-user/:id", userAuth(["admin", "editor"]), getUser);
 router.get("/garages", userAuth(["admin", "editor"]), getPartners);
+router.get("/get-faqs", userAuth(["admin", "editor"]), getFAQs); // all users can get an faq
 
 export default router;

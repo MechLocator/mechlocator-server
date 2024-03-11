@@ -17,6 +17,6 @@ router.post("/create", userAuth(["admin", "editor"]), createFAQ); // only an adm
 router.put("/edit/:id", userAuth(["admin", "editor"]), updateFAQ); // only and admin or editor can make changes to an faq
 router.delete("/delete/:id", userAuth(["admin", "editor"]), deleteFAQ); // only an admin can delete an faq
 router.get("/get/:id", verifyUser, getFAQ); // all users can get an faq
-router.get("/get-all", verifyUser, userAuth(["admin", "editor"]), getFAQs); // all users can get an faq
+router.get("/get-all", verifyUser, getFAQs); // all users can get an faq
 
 export default router;

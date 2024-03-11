@@ -178,7 +178,7 @@ export const createDashUser = async (req, res, next) => {
 /**
  * @DESC Controller function to handle sending of the password reset code to the user via Nodemmailer(https://nodemailer.com for more information)
  */
-export const modifyUserStatus = async () => {
+export const modifyUserStatus = async (req, res, next) => {
   try {
     const userToModify = await User.findByIdAndUpdate(
       req.params.id,
@@ -187,14 +187,11 @@ export const modifyUserStatus = async () => {
     );
     return res.status(200).json({
       success: true,
-      message: "User password updated successfully",
+      message: "User updated successfully",
       user: userToModify,
     });
   } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+    next(error);
   }
 };
 

@@ -33,7 +33,6 @@ const UserSchema = new mongoose.Schema(
     location: {
       type: String,
     },
-    tags: [{ type: String }], // we push verified or suspended statuses here from the frontend
     coords: { type: Object },
     isVerified: {
       type: Boolean,

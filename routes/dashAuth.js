@@ -48,8 +48,8 @@ router.post("/create-dash-user", userAuth(["admin"]), createDashUser);
 router.put("/modify-status", userAuth(["admin", "editor"]), modifyUserStatus);
 router.post("/pass-to-email", userAuth(["admin"]), sendPassCodeToEmail); // only admins or editors can access this route
 //GET ALL
-router.get("/get-all-users", userAuth(["admin", "editor"]), getAllUsers);
-router.get("/get-users", userAuth(["admin", "editor"]), getUsers);
+router.get("/get-all-users", userAuth(["admin", "editor"]), getUsers);
+router.get("/get-users", userAuth(["admin", "editor"]), getAllUsers);
 router.get("/get-query-result", userAuth(["admin", "editor"]), fetchUser);
 router.get("/get-user/:id", userAuth(["admin", "editor"]), getUser);
 router.get("/garages", userAuth(["admin", "editor"]), getPartners);

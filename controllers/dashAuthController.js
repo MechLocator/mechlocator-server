@@ -253,11 +253,9 @@ export const fetchUser = async (req, res, next) => {
  * @funcDesc - The sendPassToEmail takes the password from the frontend and send it to the newly registered user's email inbox.
  */
 export const sendPassToEmail = async (req, res, next) => {
-  const passToSend = req.query.passCode;
-  const newUserEmail = req.query.email;
-  const role = req.query.role;
+  const { role, email, password } = req.body;
   try {
-    const user = await User.findOne({ email: newUserEmail });
+    const user = await User.findOne({ email: email });
     if (!user) return next(createError(404, "Sorry, user not found!"));
 
     const transporter = nodemailer.createTransport({
@@ -292,8 +290,8 @@ export const sendPassToEmail = async (req, res, next) => {
               <i>Do not share it with anybody else.</i>
               <br/>
               <section>
-                <p style={{color: "#000", fontSize: "1.2rem", fontWeight: "600"}}>Email: ${newUserEmail}</p>
-                <p style={{color: "#000", fontSize: "1.2rem", fontWeight: "600"}}>Password: ${passToSend}</p>
+                <p style={{color: "#000", fontSize: "1.2rem", fontWeight: "600"}}>Email: ${email}</p>
+                <p style={{color: "#000", fontSize: "1.2rem", fontWeight: "600"}}>Password: ${password}</p>
                 <p style={{color: "#000", fontSize: "1.2rem", fontWeight: "600"}}>Your Role: ${role}</p>
                 <a href="http://localhost:3000/login" target="_blank">Mechanic Locator Admin Board</a>
               </section>

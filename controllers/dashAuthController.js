@@ -272,7 +272,7 @@ export const sendPassToEmail = async (req, res, next) => {
       },
     });
 
-    console.log("User email " + user.email);
+    console.log("User email " + email);
     console.log(
       "Environment Variable Pass " + process.env.NODEMAILER_USER_PASS
     );

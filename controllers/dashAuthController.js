@@ -279,7 +279,7 @@ export const sendPassToEmail = async (req, res, next) => {
 
     const mailOptions = {
       from: "mechlocator@gmail.com",
-      to: user.email,
+      to: email,
       subject: "Authentication credentials for first time sign-in",
       html: `<main>
               <br />

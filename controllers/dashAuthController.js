@@ -255,9 +255,6 @@ export const fetchUser = async (req, res, next) => {
 export const sendPassToEmail = async (req, res, next) => {
   const { role, email, password } = req.body;
   try {
-    const user = await AuthUser.findOne({ email: email });
-    if (!user) return next(createError(404, "Sorry, user not found!"));
-
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       service: "gmail",

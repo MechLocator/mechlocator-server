@@ -250,25 +250,16 @@ export const fetchUser = async (req, res, next) => {
 };
 
 /**
- * @DESC Controller function to handle fetch request for all garages
+ * @funcDesc - The sendPassToEmail takes the password from the frontend and send it to the newly registered user's email inbox.
  */
-export const getPartners = async (req, res, next) => {
-  const query = { accountType: req.query.accountType };
+export const sendPassToEmail = async (req, res, next) => {
+  const passToSend = req.query.passCode;
+  const newUserEmail = req.query.email;
+  const role = req.query.role;
   try {
-    const partners = await User.find(query);
-    res.status(200).json(partners);
-    console.log(partners);
-  } catch (error) {
-    next(error);
-  }
-};
+    const user = await User.findOne({ email: newUserEmail });
+    if (!user) return next(createError(404, "Sorry, user not found!"));
 
-/**
- * @DESC Controller function to handle sending of the password reset code to the user via Nodemmailer(https://nodemailer.com for more information)
- */
-export const sendPassCodeToEmail = async (req, res, next) => {
-  const { email } = req.body;
-  try {
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       service: "gmail",
@@ -285,16 +276,28 @@ export const sendPassCodeToEmail = async (req, res, next) => {
         rejectUnauthorized: true,
       },
     });
+
+    console.log("User email " + user.email);
     console.log(
       "Environment Variable Pass " + process.env.NODEMAILER_USER_PASS
     );
 
     const mailOptions = {
       from: "mechlocator@gmail.com",
-      to: email,
-      subject:
-        "Use the passcode below for your first login into the web app - Mechanic Locator",
-      html: `<main><b>Use this email for your login. You can chenge this in the app:</b><br/><p style="color: #ff0000; fontSize: 18px;">${req.body.password}</p></main>`,
+      to: user.email,
+      subject: "Authentication credentials for first time sign-in",
+      html: `<main>
+              <br />
+              <b>Use the credentials below to sign-in for the first time. You can then change the password to what you wish later.</b>
+              <i>Do not share it with anybody else.</i>
+              <br/>
+              <section>
+                <p style={{color: "#000", fontSize: "1.2rem", fontWeight: "600"}}>Email: ${newUserEmail}</p>
+                <p style={{color: "#000", fontSize: "1.2rem", fontWeight: "600"}}>Password: ${passToSend}</p>
+                <p style={{color: "#000", fontSize: "1.2rem", fontWeight: "600"}}>Your Role: ${role}</p>
+                <a href="http://localhost:3000/login" target="_blank">Mechanic Locator Admin Board</a>
+              </section>
+            </main>`,
     };
 
     await new Promise((resolve, reject) => {
@@ -308,13 +311,26 @@ export const sendPassCodeToEmail = async (req, res, next) => {
         }
       });
     });
-    res.send("Email Sent!!");
+    res.status(200).json({
+      success: true,
+      message: "New user's credentials sent successfully",
+    });
   } catch (error) {
     next(error);
-    console.log(
-      `Error when sending new passcode to created user on dashboard!`
-    );
-    console.log(error.message);
+  }
+};
+
+/**
+ * @DESC Controller function to handle fetch request for all garages
+ */
+export const getPartners = async (req, res, next) => {
+  const query = { accountType: req.query.accountType };
+  try {
+    const partners = await User.find(query);
+    res.status(200).json(partners);
+    console.log(partners);
+  } catch (error) {
+    next(error);
   }
 };
 

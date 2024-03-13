@@ -176,7 +176,27 @@ export const createDashUser = async (req, res, next) => {
 };
 
 /**
- * @DESC Controller function to handle sending of the password reset code to the user via Nodemmailer(https://nodemailer.com for more information)
+ * @DESC Controller function to handle information updates on admin board accounts only
+ */
+export const updateUser = async (req, res, next) => {
+  try {
+    const userToModify = await AuthUser.findByIdAndUpdate(
+      req.params.id,
+      { $set: { ...req.body } },
+      { new: true }
+    );
+    return res.status(200).json({
+      success: true,
+      message: "User updated successfully",
+      user: userToModify,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @DESC Controller function to handle the verification or suspension of app users)
  */
 export const modifyUserStatus = async (req, res, next) => {
   try {

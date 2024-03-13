@@ -1,2 +1,2 @@
 # GET http://localhost:8080/api/dashboard/users/get-all-users?page=1&pageSize=7
-POST  http://localhost:8080/api/dashboard/users/send?email=ndirangugithinji23@gmail.com&passCode=jIkccij9I93*(_ngwu&role=editor
+# POST  http://localhost:8080/api/dashboard/users/send?email=ndirangugithinji23@gmail.com&passCode=jIkccij9I93*(_ngwu&role=editor

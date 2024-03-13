@@ -37,11 +37,7 @@ router.get("/sign-out", isAuth, userAuth(["admin", "editor"]), signOut);
  includes verification and suspension.
 */
 
-router.put(
-  "/modify-status/:id",
-  userAuth(["admin", "editor"]),
-  modifyUserStatus
-);
+router.put("/update-user/:id", userAuth(["admin", "editor"]), modifyUserStatus);
 // create a dashboard users route
 router.post("/reset-password", userAuth(["admin", "editor"]), resetPassword); // both admins and editors can reset their own passwords
 router.post("/create-dash-user", userAuth(["admin"]), createDashUser);

@@ -42,7 +42,11 @@ router.put("/update-user/:id", updateUser);
 // create a dashboard users route
 router.post("/reset-password", userAuth(["admin", "editor"]), resetPassword); // both admins and editors can reset their own passwords
 router.post("/create-dash-user", userAuth(["admin"]), createDashUser);
-router.put("/modify-status", userAuth(["admin", "editor"]), modifyUserStatus);
+router.put(
+  "/modify-status/:id",
+  userAuth(["admin", "editor"]),
+  modifyUserStatus
+);
 //GET ALL
 router.get("/get-all-users", userAuth(["admin", "editor"]), getUsers);
 router.post("/send", userAuth(["admin"]), sendPassToEmail);

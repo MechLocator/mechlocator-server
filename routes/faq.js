@@ -2,6 +2,7 @@ import express from "express";
 import {
   createFAQ,
   deleteFAQ,
+  faqsByCategory,
   getFAQ,
   getFAQs,
   updateFAQ,
@@ -17,6 +18,7 @@ router.post("/create", userAuth(["admin", "editor"]), createFAQ); // only an adm
 router.put("/edit/:id", userAuth(["admin", "editor"]), updateFAQ); // only and admin or editor can make changes to an faq
 router.delete("/delete/:id", userAuth(["admin", "editor"]), deleteFAQ); // only an admin can delete an faq
 router.get("/get/:id", verifyUser, getFAQ); // all users can get an faq
+router.get("/faqs-by-category", verifyUser, faqsByCategory);
 router.get("/get-all", verifyUser, getFAQs); // all users can get an faq
 
 export default router;

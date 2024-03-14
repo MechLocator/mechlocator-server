@@ -61,3 +61,14 @@ export const getFAQs = async (req, res, next) => {
     next(err);
   }
 };
+
+export const faqsByCategory = async (req, res, next) => {
+  const category = { category: req.query.category };
+
+  try {
+    const results = await FAQ.find(category);
+    return res.status(200).json(results);
+  } catch (error) {
+    next(error);
+  }
+};

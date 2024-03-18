@@ -16,5 +16,6 @@ router.put("/edit-review/:id", verifyUser, updateReview);
 router.delete("/delete-review/:id", deleteReview);
 router.get("/get-review/:id", verifyUser, getReview);
 router.get("/get-reviews", verifyUser, getReviews);
+router.get("/get-all-reviews", getReviews);
 
 export default router;

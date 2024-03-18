@@ -2,9 +2,13 @@ import mongoose from "mongoose";
 
 const ReviewsSchema = new mongoose.Schema(
   {
-    writer: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+    reviewerName: {
+      type: String,
+      required: true,
+    },
+    reviewerAccountType: {
+      type: String,
+      required: true,
     },
     body: {
       type: String,

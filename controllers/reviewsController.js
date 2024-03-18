@@ -58,7 +58,7 @@ export const deleteReview = async (req, res, next) => {
 export const getReviews = async (req, res, next) => {
   try {
     const reviews = await Reviews.find();
-    res.status(200).json(reviews);
+    return res.status(200).json(reviews);
   } catch (err) {
     next(err);
   }

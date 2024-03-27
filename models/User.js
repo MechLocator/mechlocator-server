@@ -33,6 +33,10 @@ const UserSchema = new mongoose.Schema(
     location: {
       type: String,
     },
+    isTermsAgreed: {
+      type: Boolean,
+      default: false
+    },
     coords: { type: Object },
     isVerified: {
       type: Boolean,

@@ -10,13 +10,14 @@ import {
   getUserByEmail,
 } from "../controllers/userController.js";
 import verifyUser from "../utils/verifyUser.js";
+import { isAuth } from "../controllers/authController.js";
 
 const router = express.Router();
 
 //UPDATE
 
 // Allow only the user to perform updates to their profile from here
-router.put("/update-resource/:id", verifyUser, updateUser);
+router.put("/update-resource/:id", verifyUser, isAuth, updateUser);
 router.put("/add-info/:id", updateUser);
 
 //DELETE

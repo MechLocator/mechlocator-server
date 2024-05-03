@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import { createError } from "../utils/error.js";
 import { verifyNumber } from "../utils/verifyNumber.js";
 
 export const updateUser = async (req, res, next) => {
@@ -13,6 +14,25 @@ export const updateUser = async (req, res, next) => {
     next(err);
   }
 };
+
+export const acceptTerms = async (req,res,next) => {
+  const { email } = req.body
+  try {
+    // Ascertain the user's email exists in the database
+    const user = await User.findOne({ email: email });
+    if (!user) return next(createError(404, "Sorry, user not found!"));
+
+    // Update the isTermsAgreed attribute of the User model
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true }
+    )
+    return res.status(200).json(updatedUser);
+  } catch (error) {
+    next(error)
+  }
+}
 
 export const deleteUser = async (req, res, next) => {
   try {

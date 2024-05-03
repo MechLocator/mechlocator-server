@@ -8,6 +8,7 @@ import {
   getPartners,
   getGarageByLocation,
   getUserByEmail,
+  acceptTerms,
 } from "../controllers/userController.js";
 import verifyUser from "../utils/verifyUser.js";
 import { isAuth } from "../controllers/authController.js";
@@ -18,6 +19,7 @@ const router = express.Router();
 
 // Allow only the user to perform updates to their profile from here
 router.put("/update-resource/:id", verifyUser, updateUser);
+router.put("/accept-terms/:id", verifyUser, acceptTerms)
 router.put("/add-info/:id", updateUser);
 
 //DELETE

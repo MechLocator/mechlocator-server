@@ -19,7 +19,7 @@ const router = express.Router();
 
 // Allow only the user to perform updates to their profile from here
 router.put("/update-resource/:id", verifyUser, updateUser);
-router.put("/accept-terms/:id", verifyUser, acceptTerms)
+router.put("/accept-terms/:id", acceptTerms)
 router.put("/add-info/:id", updateUser);
 
 //DELETE

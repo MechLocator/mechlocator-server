@@ -37,7 +37,9 @@ export const acceptTerms = async (req,res,next) => {
 export const deleteUser = async (req, res, next) => {
   try {
     await User.findByIdAndDelete(req.params.id);
-    res.status(200).json("User has been deleted!!");
+    return res
+      .status(200)
+      .json({ status: 200, message: "User has been deleted!!" });
   } catch (err) {
     next(err);
   }

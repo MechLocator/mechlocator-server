@@ -26,7 +26,7 @@ router.put("/add-info/:id", updateUser);
 /*
  A User alone can delete their account
 */
-router.delete("/delete-resource/:id", verifyUser, deleteUser);
+router.delete("/delete-account/:id", verifyUser, deleteUser);
 
 router.get("/get-user", getUserByEmail);
 

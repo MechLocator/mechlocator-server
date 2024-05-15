@@ -16,11 +16,11 @@ export const updateUser = async (req, res, next) => {
 };
 
 export const acceptTerms = async (req,res,next) => {
-  const { email } = req.body
+  const {id} = req.params
   try {
     // Ascertain the user's email exists in the database
-    const user = await User.findOne({ email: email });
-    if (!user) return next(createError(404, "Sorry, user not found!"));
+    const user = await User.findById({ _id: id });
+    if (!user) return next(createError(404, "Sorry, this user was not found!!"));
 
     // Update the isTermsAgreed attribute of the User model
     const updatedUser = await User.findByIdAndUpdate(

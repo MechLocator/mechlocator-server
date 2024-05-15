@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  getUserById,
   isAuth,
   login,
   register,
@@ -14,6 +15,7 @@ const router = express.Router();
 
 router.post("/register", register);
 router.post("/login", login);
+router.get("/get-user/:id", getUserById)
 router.get("/sign-out", isAuth, signOut); // android app logout
 router.post("/reset-password", resetPassword); // android app reset password route
 router.post("/verify-code", verifyCode);

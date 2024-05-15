@@ -83,6 +83,15 @@ export const login = async (req, res, next) => {
   }
 };
 
+export const getUserById = async (req,res,next) => {
+  try {
+    const retrievedUser = await User.findById(req.params.id);
+    res.status(200).send(retrievedUser);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export const resetPassword = async (req, res, next) => {
   const { email } = req.body;
   try {

@@ -310,7 +310,7 @@ export const sendPassToEmail = async (req, res, next) => {
                 <p style={{color: "#000", fontSize: "1.2rem", fontWeight: "600"}}>Email: ${email}</p>
                 <p style={{color: "#000", fontSize: "1.2rem", fontWeight: "600"}}>Password: ${password}</p>
                 <p style={{color: "#000", fontSize: "1.2rem", fontWeight: "600"}}>Your Role: ${role}</p>
-                <a href="http://localhost:3000/login" target="_blank">Mechanic Locator Admin Board</a>
+                <a href="https://admin.mechtraktech.com" target="_blank">Mechanic Locator Admin Board</a>
               </section>
             </main>`,
     };
